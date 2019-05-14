@@ -41,18 +41,33 @@ resource "aws_instance" "turbonomic_aws" {
   instance_type   = "m5.xlarge"
   security_groups = ["${aws_security_group.https-ssh-sg.name}"]
   key_name        = "${var.key_pair}"                           #Define key pair name in variables.tf file
+# the below will upgrade the server to v6.3.5 - may take 10 minutes to complete
+  user_data = <<EOF
+#!/bin/bash
+touch ~/userdata.txt
+yum update -y
+cd /tmp
+curl -O http://download.vmturbo.com/appliance/download/updates/6.3.5/update64_centos-20190430122432000-6.3.5.zip
+unzip update64_centos-20190430122432000-6.3.5.zip
+cd vmturbo
+yum -y localupdate i586/* x86_64/*
+EOF
 
   tags {
-    Name  = "Turbonomic_tf ${count.index}"
-    Owner = "JBD"
+    Name = "Turbonomic_tf ${count.index}"
   }
 }
 
 # output instance ID (default password)
 
-output "Turbonomic_URL" {
+output "Turbonomic_URL_IP" {
   value       = "https://${aws_instance.turbonomic_aws.public_ip}"
   description = "The Public IP address of the Turbonomic server instance"
+}
+
+output "Turbonomic_URL_DNS" {
+  value       = "https://${aws_instance.turbonomic_aws.public_dns}"
+  description = "The Public DNS address of the Turbonomic server instance"
 }
 
 output "Turbonomic_administrator_password" {
