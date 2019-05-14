@@ -3,4 +3,4 @@ How to deploy an AWS Instance with Terraform - using Turbonomic Image as an exam
 
 HOW TO - COMING SOON
 
-In its current state, the TF config will use ~/.aws/credentials (ensure to run aws configure before running the config)
+In its current state, the TF config will use ~/.aws/credentials (ensure to run 'aws configure' before running the config)
