@@ -1,4 +1,4 @@
-# AWS credentail based on OS Environment variables
+# AWS credentials based on OS Environment variables defined with 'aws configure'
 
 #variable "aws_access_key" {}
 #variable "aws_secret_key" {}
